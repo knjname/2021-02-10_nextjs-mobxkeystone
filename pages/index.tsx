@@ -1,15 +1,35 @@
 import { useObserver } from "mobx-react-lite";
 import Link from "next/link";
 import Layout from "../components/Layout";
-import { useCounter } from "../store/useCounter";
+import { useModel } from "../store/useRoot";
 
 const IndexPage = () => {
-  const counter = useCounter();
+  const model = useModel();
+  const { loginForm } = model;
   return useObserver(() => {
+    const disabled = loginForm.formDisabled;
     return (
       <div>
-        <button onClick={() => counter.incr()}>
-          COUNTER: {counter.counter}
+        <p>
+          Login ID:{" "}
+          <input
+            type="text"
+            disabled={disabled}
+            value={loginForm.loginId}
+            onChange={(ev) => loginForm.setLoginId(ev.currentTarget.value)}
+          />
+        </p>
+        <p>
+          Password:{" "}
+          <input
+            type="text"
+            disabled={disabled}
+            value={loginForm.password}
+            onChange={(ev) => loginForm.setPassword(ev.currentTarget.value)}
+          />
+        </p>
+        <button disabled={disabled} onClick={() => loginForm.submit()}>
+          Login as {loginForm.loginId}
         </button>
       </div>
     );
