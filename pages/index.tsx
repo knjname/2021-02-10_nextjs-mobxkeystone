@@ -1,15 +1,19 @@
-import Link from 'next/link'
-import Layout from '../components/Layout'
+import { useObserver } from "mobx-react-lite";
+import Link from "next/link";
+import Layout from "../components/Layout";
+import { useCounter } from "../store/useCounter";
 
-const IndexPage = () => (
-  <Layout title="Home | Next.js + TypeScript Example">
-    <h1>Hello Next.js 👋</h1>
-    <p>
-      <Link href="/about">
-        <a>About</a>
-      </Link>
-    </p>
-  </Layout>
-)
+const IndexPage = () => {
+  const counter = useCounter();
+  return useObserver(() => {
+    return (
+      <div>
+        <button onClick={() => counter.incr()}>
+          COUNTER: {counter.counter}
+        </button>
+      </div>
+    );
+  });
+};
 
-export default IndexPage
+export default IndexPage;
